@@ -11,14 +11,12 @@ sudo cp "$PROJECT_ROOT/scripts/switch-to-wifi-client.sh" /usr/local/bin/
 sudo cp "$PROJECT_ROOT/scripts/wifi-connection-monitor.sh" /usr/local/bin/
 sudo cp "$PROJECT_ROOT/scripts/wifi-reconnect-on-boot.sh" /usr/local/bin/
 sudo cp "$PROJECT_ROOT/scripts/switch-to-ap-mode.sh" /usr/local/bin/
-sudo cp "$PROJECT_ROOT/scripts/scan-wifi-networks.sh" /usr/local/bin/
 
 # Make scripts executable
 sudo chmod +x /usr/local/bin/switch-to-wifi-client.sh
 sudo chmod +x /usr/local/bin/wifi-connection-monitor.sh
 sudo chmod +x /usr/local/bin/wifi-reconnect-on-boot.sh
 sudo chmod +x /usr/local/bin/switch-to-ap-mode.sh
-sudo chmod +x /usr/local/bin/scan-wifi-networks.sh
 
 # Create directory for WiFi credentials
 sudo mkdir -p /etc/raspi-captive-portal

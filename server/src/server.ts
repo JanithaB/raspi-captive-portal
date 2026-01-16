@@ -2,7 +2,6 @@ import express, { NextFunction, Request, Response } from 'express';
 import path from 'path';
 import { pong } from './pong';
 import { connectToWifi } from './wifi-connect';
-import { scanWifiNetworks } from './wifi-scan';
 
 
 ////////////////////////////// Setup ///////////////////////////////////////////
@@ -40,21 +39,6 @@ app.get('/', (req, res, next) => {
 });
 
 app.get('/api/ping', pong);
-
-// WiFi network scan endpoint
-app.get('/api/scan-wifi', async (req: Request, res: Response) => {
-    try {
-        const networks = await scanWifiNetworks();
-        res.json({ networks, success: true });
-    } catch (error: any) {
-        console.error('Error scanning WiFi networks:', error);
-        res.status(500).json({ 
-            error: error.message || 'Failed to scan WiFi networks',
-            networks: [],
-            success: false 
-        });
-    }
-});
 
 // WiFi connection endpoint
 app.post('/api/connect-wifi', async (req: Request, res: Response) => {
