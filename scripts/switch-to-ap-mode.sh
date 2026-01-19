@@ -42,4 +42,10 @@ systemctl start dnsmasq
 # Start captive portal server
 systemctl start access-point-server || true
 
-log_message "Access Point mode activated successfully"
+# Get SSID from hostapd config if available
+AP_SSID="Access Point"
+if [ -f "/etc/hostapd/hostapd.conf" ]; then
+    AP_SSID=$(grep "^ssid=" /etc/hostapd/hostapd.conf | cut -d'=' -f2)
+fi
+
+log_message "Access Point mode activated successfully. SSID: $AP_SSID"

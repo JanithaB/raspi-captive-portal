@@ -24,6 +24,10 @@ PASSWORD=$(cat "$WIFI_PASSWORD_FILE")
 
 log_message "Attempting to connect to saved WiFi network: $SSID"
 
+# Ensure wpa_supplicant is enabled and started
+systemctl enable wpa_supplicant || true
+systemctl start wpa_supplicant || true
+
 # Wait for network services to be ready
 sleep 10
 
@@ -43,7 +47,8 @@ while [ $(($(date +%s) - START_TIME)) -lt $CONNECTION_TIMEOUT ]; do
         log_message "Successfully connected to WiFi network: $SSID"
         log_message "Internet connectivity confirmed. Starting connection monitor."
         
-        # Start the connection monitor service
+        # Enable and start the connection monitor service
+        systemctl enable wifi-connection-monitor.service || true
         systemctl start wifi-connection-monitor.service || true
         
         exit 0

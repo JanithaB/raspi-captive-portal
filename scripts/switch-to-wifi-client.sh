@@ -22,7 +22,7 @@ systemctl stop dnsmasq
 systemctl disable hostapd
 systemctl disable dnsmasq
 
-# Stop and disable the captive portal server (will be restarted if needed)
+# Stop the captive portal server (keep it enabled for potential AP fallback)
 systemctl stop access-point-server || true
 
 # Remove static IP configuration for wlan0 in dhcpcd.conf
