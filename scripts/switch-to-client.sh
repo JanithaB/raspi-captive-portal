@@ -7,26 +7,25 @@ sudo systemctl stop hostapd
 sudo systemctl stop dnsmasq
 sudo pkill -f portal_server.py
 
-# Reset dhcpcd to normal
-sudo tee /etc/dhcpcd.conf > /dev/null <<EOF
-hostname
-clientid
-persistent
-option rapid_commit
-option domain_name_servers, domain_name, domain_search, host_name
-option classless_static_routes
-option interface_mtu
-require dhcp_server_identifier
-slaac private
-EOF
-
-# Restart dhcpcd
-sudo systemctl restart dhcpcd
+# Clear iptables rules
+sudo iptables -t nat -F
+sudo iptables -t mangle -F
+sudo iptables -F
+sudo netfilter-persistent save
 
 # Reconfigure wlan0 for client mode
 sudo ip addr flush dev wlan0
+sudo ip link set wlan0 down
+sleep 1
+sudo ip link set wlan0 up
+
+# Re-enable NetworkManager management of wlan0
+sudo rm -f /etc/NetworkManager/conf.d/unmanaged.conf
+sudo systemctl reload NetworkManager
+
+# Wait for NetworkManager to take over
+sleep 2
 
 echo "Client Mode activated!"
-echo "The device will now connect using /etc/wpa_supplicant/wpa_supplicant.conf"
-echo "Restarting network..."
-sudo systemctl restart dhcpcd
+echo "NetworkManager will now manage wlan0"
+echo "Ready to connect to WiFi network..."

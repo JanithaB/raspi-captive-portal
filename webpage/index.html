@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <title>WiFi Setup</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
@@ -11,8 +12,8 @@
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f5f7fa;
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -22,132 +23,167 @@
         
         .container {
             background: white;
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-            max-width: 450px;
+            padding: 45px;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            max-width: 480px;
             width: 100%;
+            border: 1px solid #e8ecf1;
+        }
+        
+        .logo {
+            display: block;
+            margin: 0 auto 30px;
+            width: 120px;
+            height: 120px;
+            border-radius: 16px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
         }
         
         h2 {
-            color: #333;
-            margin-bottom: 25px;
+            color: #1a202c;
+            margin-bottom: 10px;
             text-align: center;
-            font-size: 24px;
+            font-size: 26px;
+            font-weight: 700;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #718096;
+            font-size: 14px;
+            margin-bottom: 30px;
         }
         
         label {
             display: block;
-            margin: 20px 0 8px;
-            color: #555;
+            margin: 22px 0 10px;
+            color: #2d3748;
             font-weight: 600;
             font-size: 14px;
+            letter-spacing: 0.3px;
         }
         
         select, input {
             width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
+            padding: 14px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
             font-size: 15px;
-            transition: border-color 0.3s;
+            background: #f8fafc;
+            transition: all 0.3s;
+            color: #2d3748;
         }
         
         select:focus, input:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #3182ce;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
         }
         
         button {
             width: 100%;
-            padding: 14px;
+            padding: 16px;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
-            margin-top: 15px;
+            transition: all 0.2s;
+            margin-top: 16px;
+            letter-spacing: 0.3px;
         }
         
         #connectBtn {
-            background: #667eea;
+            background: #3182ce;
             color: white;
+            margin-top: 25px;
         }
         
-        #connectBtn:hover {
-            background: #5568d3;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        #connectBtn:hover:not(:disabled) {
+            background: #2c5282;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(49, 130, 206, 0.3);
         }
         
         #scanBtn {
-            background: #48bb78;
-            color: white;
+            background: #edf2f7;
+            color: #2d3748;
+            border: 2px solid #e2e8f0;
         }
         
-        #scanBtn:hover {
-            background: #38a169;
+        #scanBtn:hover:not(:disabled) {
+            background: #e2e8f0;
+            border-color: #cbd5e0;
         }
         
         button:disabled {
-            background: #cbd5e0;
+            background: #e2e8f0;
+            color: #a0aec0;
             cursor: not-allowed;
             transform: none;
+            opacity: 0.7;
         }
         
         .loading {
             text-align: center;
-            color: #667eea;
+            color: #3182ce;
             margin: 15px 0;
             font-weight: 500;
+            font-size: 14px;
         }
         
         #status {
-            margin-top: 20px;
-            padding: 15px;
-            border-radius: 8px;
+            margin-top: 24px;
+            padding: 16px 18px;
+            border-radius: 10px;
             text-align: center;
             font-weight: 500;
+            font-size: 14px;
             display: none;
+            border: 2px solid transparent;
         }
         
         #status.success {
-            background: #c6f6d5;
-            color: #22543d;
+            background: #d1fae5;
+            color: #065f46;
+            border-color: #6ee7b7;
             display: block;
         }
         
         #status.error {
-            background: #fed7d7;
-            color: #742a2a;
+            background: #fee2e2;
+            color: #991b1b;
+            border-color: #fca5a5;
             display: block;
         }
         
         .network-count {
             text-align: center;
-            color: #718096;
+            color: #64748b;
             font-size: 13px;
-            margin-top: 8px;
+            margin-top: 10px;
+            font-weight: 500;
         }
         
         .network-info {
             display: inline-block;
             margin-left: 8px;
-            padding: 2px 8px;
-            border-radius: 4px;
+            padding: 4px 10px;
+            border-radius: 6px;
             font-size: 11px;
-            font-weight: bold;
+            font-weight: 600;
         }
         
         .network-open {
-            background: #c6f6d5;
-            color: #22543d;
+            background: #d1fae5;
+            color: #065f46;
         }
         
         .network-secured {
-            background: #fed7d7;
-            color: #742a2a;
+            background: #fee2e2;
+            color: #991b1b;
         }
         
         .checkbox-container {
@@ -180,35 +216,37 @@
 </head>
 <body>
     <div class="container">
-        <h2>🛜 WiFi Configuration</h2>
+        <img src="/logo.png" alt="Logo" class="logo">
+        <h2>WMS Gateway</h2>
+        <p class="subtitle">WiFi Configuration</p>
         <form id="wifiForm">
             <label>Available Networks</label>
             <select id="ssid" name="ssid" required>
-                <option value="">-- Select Network --</option>
+                <option value="">Select a network...</option>
             </select>
             <div class="network-count" id="networkCount"></div>
             
             <button type="button" id="scanBtn" onclick="scanNetworks()">
-                🔄 Scan Networks
+                ↻ Refresh Networks
             </button>
             
             <div id="loading" class="loading" style="display:none;">
                 Scanning for networks...
             </div>
             
-            <div class="checkbox-container">
+            <div class="checkbox-container" style="display: none;">
                 <input type="checkbox" id="openNetwork" onchange="togglePasswordField()">
                 <label for="openNetwork">This is an open network (no password)</label>
             </div>
             
-            <div id="passwordGroup">
+            <div id="passwordGroup" style="display: none;">
                 <label>WiFi Password</label>
                 <input type="password" id="password" name="password" 
                        placeholder="Enter password">
             </div>
             
             <button type="submit" id="connectBtn">
-                ✓ Connect to WiFi
+                Connect to Network
             </button>
         </form>
         
@@ -242,13 +280,13 @@
             
             loadingDiv.style.display = 'block';
             scanBtn.disabled = true;
-            scanBtn.textContent = '⏳ Scanning...';
+            scanBtn.textContent = '⟳ Scanning...';
             statusDiv.style.display = 'none';
             
             fetch('/scan')
                 .then(response => response.json())
                 .then(data => {
-                    ssidSelect.innerHTML = '<option value="">-- Select Network --</option>';
+                    ssidSelect.innerHTML = '<option value="">Select a network...</option>';
                     networkSecurity = {};
                     
                     if (data.networks && data.networks.length > 0) {
@@ -259,9 +297,8 @@
                             // Store security info
                             networkSecurity[network.ssid] = network.security;
                             
-                            // Add security indicator to display
-                            const securityBadge = network.security === 'OPEN' ? '🔓' : '🔒';
-                            option.textContent = `${securityBadge} ${network.ssid}`;
+                            // Just show the SSID without security badge
+                            option.textContent = network.ssid;
                             
                             ssidSelect.appendChild(option);
                         });
@@ -272,12 +309,12 @@
                     
                     loadingDiv.style.display = 'none';
                     scanBtn.disabled = false;
-                    scanBtn.textContent = '🔄 Scan Networks';
+                    scanBtn.textContent = '↻ Refresh Networks';
                 })
                 .catch(error => {
                     loadingDiv.style.display = 'none';
                     scanBtn.disabled = false;
-                    scanBtn.textContent = '🔄 Scan Networks';
+                    scanBtn.textContent = '🔄 Refresh Networks';
                     statusDiv.className = 'error';
                     statusDiv.textContent = 'Scan failed. Please try again.';
                     statusDiv.style.display = 'block';
@@ -288,13 +325,24 @@
         document.getElementById('ssid').addEventListener('change', function() {
             const selectedSSID = this.value;
             const openNetworkCheckbox = document.getElementById('openNetwork');
+            const passwordGroup = document.getElementById('passwordGroup');
+            const passwordInput = document.getElementById('password');
             
             if (selectedSSID && networkSecurity[selectedSSID] === 'OPEN') {
+                // Open network - hide password field
                 openNetworkCheckbox.checked = true;
-                togglePasswordField();
-            } else {
+                passwordGroup.style.display = 'none';
+                passwordInput.removeAttribute('required');
+                passwordInput.value = '';
+            } else if (selectedSSID) {
+                // Secured network - show password field
                 openNetworkCheckbox.checked = false;
-                togglePasswordField();
+                passwordGroup.style.display = 'block';
+                passwordInput.setAttribute('required', 'required');
+            } else {
+                // No network selected - hide password field
+                passwordGroup.style.display = 'none';
+                passwordInput.removeAttribute('required');
             }
         });
 
@@ -322,7 +370,7 @@
             }
             
             connectBtn.disabled = true;
-            connectBtn.textContent = '⏳ Connecting...';
+            connectBtn.textContent = '⟳ Connecting...';
             
             fetch('/connect', {
                 method: 'POST',
@@ -342,7 +390,7 @@
                     statusDiv.className = 'error';
                     statusDiv.textContent = data.message;
                     connectBtn.disabled = false;
-                    connectBtn.textContent = '✓ Connect to WiFi';
+                    connectBtn.textContent = 'Connect to Network';
                 }
                 statusDiv.style.display = 'block';
             })
@@ -351,7 +399,7 @@
                 statusDiv.textContent = 'Connection failed. Please try again.';
                 statusDiv.style.display = 'block';
                 connectBtn.disabled = false;
-                connectBtn.textContent = '✓ Connect to WiFi';
+                connectBtn.textContent = 'Connect to Network';
             });
         });
 

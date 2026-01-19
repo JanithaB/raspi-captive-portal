@@ -15,8 +15,19 @@ class PortalHandler(BaseHTTPRequestHandler):
         pass
     
     def do_GET(self):
+        # Serve logo image
+        if self.path == '/logo.png':
+            self.send_response(200)
+            self.send_header('Content-type', 'image/png')
+            self.end_headers()
+            try:
+                with open('/var/www/portal/logo.png', 'rb') as f:
+                    self.wfile.write(f.read())
+            except Exception as e:
+                pass
+        
         # Serve portal page for any request (captive portal)
-        if self.path == '/' or self.path == '/index.html' or \
+        elif self.path == '/' or self.path == '/index.html' or \
            self.path.startswith('/generate_204') or \
            self.path.startswith('/hotspot-detect') or \
            self.path.startswith('/connecttest') or \
