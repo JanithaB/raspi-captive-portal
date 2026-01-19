@@ -28,6 +28,15 @@ log_message "Attempting to connect to saved WiFi network: $SSID"
 systemctl enable wpa_supplicant || true
 systemctl start wpa_supplicant || true
 
+# Also enable interface-specific service if it exists
+if systemctl list-unit-files | grep -q "wpa_supplicant@wlan0.service"; then
+    systemctl enable wpa_supplicant@wlan0 || true
+    systemctl start wpa_supplicant@wlan0 || true
+fi
+
+# Force wpa_supplicant to reload configuration
+wpa_cli -i wlan0 reconfigure 2>/dev/null || true
+
 # Wait for network services to be ready
 sleep 10
 

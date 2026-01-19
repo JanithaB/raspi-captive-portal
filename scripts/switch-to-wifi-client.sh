@@ -78,15 +78,16 @@ network={
 }
 EOF
 else
-    # Secured network - password required
-    cat >> "$WPA_SUPPLICANT_CONF" << EOF
-
-network={
-    ssid="$SSID"
-    psk="$PASSWORD"
-    priority=1
-}
-EOF
+    # Secured network - use wpa_passphrase to generate proper PSK hash
+    echo "Generating WiFi configuration with encrypted password..."
+    
+    # Generate the network configuration with hashed PSK
+    # wpa_passphrase outputs the config with the hashed password
+    wpa_passphrase "$SSID" "$PASSWORD" >> "$WPA_SUPPLICANT_CONF"
+    
+    # Add priority to the network block we just added
+    # Find the last network block and add priority before the closing brace
+    sed -i '$s/}/    priority=1\n}/' "$WPA_SUPPLICANT_CONF"
 fi
 
 # Save WiFi credentials for fallback script
@@ -101,9 +102,19 @@ systemctl restart dhcpcd
 # Wait a moment for services to restart
 sleep 3
 
-# Enable wpa_supplicant
+# Ensure wpa_supplicant is using the correct config file
+# Some systems have multiple wpa_supplicant services
 systemctl enable wpa_supplicant
 systemctl restart wpa_supplicant
+
+# Also try the interface-specific service if it exists
+if systemctl list-unit-files | grep -q "wpa_supplicant@wlan0.service"; then
+    systemctl enable wpa_supplicant@wlan0
+    systemctl restart wpa_supplicant@wlan0
+fi
+
+# Force wpa_supplicant to reload the configuration
+wpa_cli -i wlan0 reconfigure 2>/dev/null || true
 
 # Wait for connection
 echo "Waiting for WiFi connection..."
